@@ -54,10 +54,15 @@ const QuizInstructions = () => {
                 <li>The timer starts as soon as the game loads.</li>
                 <li>Let's do this if you think you've got what it takes?</li>
             </ul>
-            <div>
-                <span className="left"><Link to="/">No take me back</Link></span>
-                <span className="right"><Link to="/play/quiz">Okay, Let's do this!</Link></span>
-            </div>
+            <div className="btn-container">
+    <span className="left">
+        <Link to="/" className="btn">No, take me back</Link>
+    </span>
+    <span className="right">
+        <Link to="/play/quiz" className="btn primary">Okay, Let's do this!</Link>
+    </span>
+</div>
+
         </div>
     </>
 )

@@ -33,6 +33,40 @@
     }
 } 
 
+.btn-container {
+    display: flex;
+    gap: 24rem;
+    justify-content: space-between;
+    padding: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    text-align: center;
+    background-color: #6c757d; 
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn.primary {
+    background-color: #28a745; 
+}
+
+.btn:hover {
+    background-color: #5a6268; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.btn-container .left, .btn-container .right {
+    display: inline-block;
+}
+
+
 @media (max-width: $md-breakpoint) {
     .instructions img {
         width: 100% !important;
