@@ -30,6 +30,35 @@
         color: darken($orange, 10%);
     }
 
+    .timer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .left, .right {
+        display: flex;
+        align-items: center;
+    }
+    
+    .timer-text {
+        margin-right: 5px;
+    }
+    
+    .timer-icon {
+        color: #4caf50; /* green color */
+    }
+    
+    .warning .timer-icon {
+        color: #ffa000; /* amber color for warning */
+    }
+    
+    .invalid .timer-icon {
+        color: #d32f2f; /* red color for invalid/danger */
+    }
+
     h5 {
         font-size: 1.2rem;
         margin-bottom: lg;

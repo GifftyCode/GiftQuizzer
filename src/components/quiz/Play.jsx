@@ -11,6 +11,9 @@ import correctNotification from '../../assets/audio/correct-answer.mp3';
 import wrongNotification from '../../assets/audio/wrong-answer.mp3';
 import buttonSound from '../../assets/audio/button-sound.mp3';
 
+import Icon from '@mdi/react';
+import { mdiSetCenter, mdiLightbulbOnOutline, mdiClockOutline } from '@mdi/js';
+
 const Play = () => {
     const [currentState, setCurrentState] = useState({
         questions,
@@ -368,26 +371,28 @@ const Play = () => {
                 <h2>Quiz Mode</h2>
                 <div className="lifeline-container">
                     <p>
-                        <span onClick={handleFiftyFifty} className="mdi mdi-set-center mdi-24px lifeline-icon">
+                        <span onClick={handleFiftyFifty} className=" lifeline-icon">
+                        <Icon path={mdiSetCenter} size={1} />
+
                             <span className="lifeline">{currentState.fiftyFifty}</span>
                         </span>
                     </p>
                     <p>
-                        <span onClick={handleHints} className="mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon">
+                        <span onClick={handleHints} className=" lifeline-icon">
+                        <Icon path={mdiLightbulbOnOutline} size={1} />
+
                             <span className="lifeline">{currentState.hints}</span>
                         </span>
                     </p>
                 </div>
                 <div className="timer-container">
-                    <p>
-                        <span className="left" style={{ float: 'left' }}>{currentState.currentQuestionIndex + 1} of {currentState.numberOfQuestions}</span>
-                        <span className={classnames('right valid', {
-                            'warning': currentState.time.distance <= 120000,
-                            'invalid': currentState.time.distance < 30000
-                        })}>
-                            {currentState.time.minutes}:{currentState.time.seconds}
-                            <span className="mdi mdi-clock-outline mdi-24px"></span>
-                        </span>
+                    <p className="left">{currentState.currentQuestionIndex + 1} of {currentState.numberOfQuestions}</p>
+                    <p className={classnames('right', {
+                        'warning': currentState.time.distance <= 120000,
+                        'invalid': currentState.time.distance < 30000
+                    })}>
+                        <span className="timer-text">{currentState.time.minutes}:{currentState.time.seconds}</span>
+                        <Icon path={mdiClockOutline} size={1} className="timer-icon" />
                     </p>
                 </div>
                 <h5>{currentState.currentQuestion.question}</h5>
