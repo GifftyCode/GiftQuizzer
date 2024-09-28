@@ -11,25 +11,27 @@ import wrongNotification from '../../assets/audio/wrong-answer.mp3';
 import buttonSound from '../../assets/audio/button-sound.mp3';
 
 const Play = (props) => {
-    const [questions, setQuestions] = useState(questionsData);
-    const [currentQuestion, setCurrentQuestion] = useState({});
-    const [nextQuestion, setNextQuestion] = useState({});
-    const [previousQuestion, setPreviousQuestion] = useState({});
-    const [answer, setAnswer] = useState('');
-    const [numberOfQuestions, setNumberOfQuestions] = useState(0);
-    const [numberOfAnsweredQuestions, setNumberOfAnsweredQuestions] = useState(0);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [score, setScore] = useState(0);
-    const [correctAnswers, setCorrectAnswers] = useState(0);
-    const [wrongAnswers, setWrongAnswers] = useState(0);
-    const [hints, setHints] = useState(5);
-    const [fiftyFifty, setFiftyFifty] = useState(2);
-    const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
-    const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
-    const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
-    const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
-    const [time, setTime] = useState({});
-    
+    const [quizState, setQuizState] = useState({
+        questions: questionsData,
+        currentQuestion: {},
+        nextQuestion: {},
+        previousQuestion: {},
+        answer: '',
+        currentQuestionIndex: 0,
+        score: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        hints: 5,
+        fiftyFifty: 2,
+        usedFiftyFifty: false,
+        nextButtonDisabled: false,
+        previousButtonDisabled: true,
+        previousRandomNumbers: [],
+        numberOfQuestions: 0,
+        numberOfAnsweredQuestions: 0,
+        time: {},
+    });
+
     const correctSound = useRef();
     const wrongSound = useRef();
     const buttonSoundRef = useRef();
@@ -41,26 +43,30 @@ const Play = (props) => {
         return () => {
             clearInterval(interval.current);
         };
-    }, [currentQuestionIndex]);
+    }, [quizState.currentQuestionIndex]);
 
-    const displayQuestions = (questionsData = questions) => {
-        if (!isEmpty(questionsData)) {
-            const currentQuestion = questionsData[currentQuestionIndex];
-            const nextQuestion = questionsData[currentQuestionIndex + 1];
-            const previousQuestion = questionsData[currentQuestionIndex - 1];
+    const displayQuestions = () => {
+        if (!isEmpty(quizState.questions)) {
+            const currentQuestion = quizState.questions[quizState.currentQuestionIndex];
+            const nextQuestion = quizState.questions[quizState.currentQuestionIndex + 1];
+            const previousQuestion = quizState.questions[quizState.currentQuestionIndex - 1];
             const answer = currentQuestion.answer;
-            setCurrentQuestion(currentQuestion);
-            setNextQuestion(nextQuestion);
-            setPreviousQuestion(previousQuestion);
-            setAnswer(answer);
-            setNumberOfQuestions(questionsData.length);
-            setPreviousRandomNumbers([]);
+
+            setQuizState(prevState => ({
+                ...prevState,
+                currentQuestion,
+                nextQuestion,
+                previousQuestion,
+                answer,
+                numberOfQuestions: quizState.questions.length,
+                previousRandomNumbers: [],
+            }));
             handleDisableButton();
         }
     };
 
     const handleOptionClick = (e) => {
-        if (e.target.innerHTML.toLowerCase() === answer.toLowerCase()) {
+        if (e.target.innerHTML.toLowerCase() === quizState.answer.toLowerCase()) {
             setTimeout(() => correctSound.current.play(), 500);
             correctAnswer();
         } else {
@@ -71,15 +77,21 @@ const Play = (props) => {
 
     const handleNextButtonClick = () => {
         playButtonSound();
-        if (nextQuestion !== undefined) {
-            setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+        if (quizState.nextQuestion !== undefined) {
+            setQuizState(prevState => ({
+                ...prevState,
+                currentQuestionIndex: prevState.currentQuestionIndex + 1
+            }));
         }
     };
 
     const handlePreviousButtonClick = () => {
         playButtonSound();
-        if (previousQuestion !== undefined) {
-            setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+        if (quizState.previousQuestion !== undefined) {
+            setQuizState(prevState => ({
+                ...prevState,
+                currentQuestionIndex: prevState.currentQuestionIndex - 1
+            }));
         }
     };
 
@@ -116,14 +128,13 @@ const Play = (props) => {
             classes: 'toast-valid',
             displayLength: 1500
         });
-        setScore(prevScore => prevScore + 1);
-        setCorrectAnswers(prevCorrect => prevCorrect + 1);
-        setNumberOfAnsweredQuestions(prevAnswered => prevAnswered + 1);
-        if (nextQuestion === undefined) {
-            endGame();
-        } else {
-            setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-        }
+        setQuizState(prevState => ({
+            ...prevState,
+            score: prevState.score + 1,
+            correctAnswers: prevState.correctAnswers + 1,
+            numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1,
+            currentQuestionIndex: quizState.nextQuestion === undefined ? prevState.currentQuestionIndex : prevState.currentQuestionIndex + 1
+        }));
     };
 
     const wrongAnswer = () => {
@@ -133,27 +144,20 @@ const Play = (props) => {
             classes: 'toast-invalid',
             displayLength: 1500
         });
-        setWrongAnswers(prevWrong => prevWrong + 1);
-        setNumberOfAnsweredQuestions(prevAnswered => prevAnswered + 1);
-        if (nextQuestion === undefined) {
-            endGame();
-        } else {
-            setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-        }
+        setQuizState(prevState => ({
+            ...prevState,
+            wrongAnswers: prevState.wrongAnswers + 1,
+            numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1,
+            currentQuestionIndex: quizState.nextQuestion === undefined ? prevState.currentQuestionIndex : prevState.currentQuestionIndex + 1
+        }));
     };
 
     const handleDisableButton = () => {
-        if (previousQuestion === undefined || currentQuestionIndex === 0) {
-            setPreviousButtonDisabled(true);
-        } else {
-            setPreviousButtonDisabled(false);
-        }
-
-        if (nextQuestion === undefined || currentQuestionIndex + 1 === numberOfQuestions) {
-            setNextButtonDisabled(true);
-        } else {
-            setNextButtonDisabled(false);
-        }
+        setQuizState(prevState => ({
+            ...prevState,
+            previousButtonDisabled: prevState.previousQuestion === undefined || prevState.currentQuestionIndex === 0,
+            nextButtonDisabled: prevState.nextQuestion === undefined || prevState.currentQuestionIndex + 1 === prevState.numberOfQuestions,
+        }));
     };
 
     const startTimer = () => {
@@ -167,10 +171,16 @@ const Play = (props) => {
 
             if (distance < 0) {
                 clearInterval(interval.current);
-                setTime({ minutes: 0, seconds: 0 });
+                setQuizState(prevState => ({
+                    ...prevState,
+                    time: { minutes: 0, seconds: 0 }
+                }));
                 endGame();
             } else {
-                setTime({ minutes, seconds, distance });
+                setQuizState(prevState => ({
+                    ...prevState,
+                    time: { minutes, seconds, distance }
+                }));
             }
         }, 1000);
     };
@@ -178,13 +188,13 @@ const Play = (props) => {
     const endGame = () => {
         alert('Quiz has ended!');
         const playerStats = {
-            score,
-            numberOfQuestions,
-            numberOfAnsweredQuestions: correctAnswers + wrongAnswers,
-            correctAnswers,
-            wrongAnswers,
-            fiftyFiftyUsed: 2 - fiftyFifty,
-            hintsUsed: 5 - hints
+            score: quizState.score,
+            numberOfQuestions: quizState.numberOfQuestions,
+            numberOfAnsweredQuestions: quizState.correctAnswers + quizState.wrongAnswers,
+            correctAnswers: quizState.correctAnswers,
+            wrongAnswers: quizState.wrongAnswers,
+            fiftyFiftyUsed: 2 - quizState.fiftyFifty,
+            hintsUsed: 5 - quizState.hints
         };
         setTimeout(() => {
             props.history.push('/play/quizSummary', playerStats);
@@ -194,55 +204,55 @@ const Play = (props) => {
     return (
         <>
             <Helmet><title>Quiz Page</title></Helmet>
-            <Fragment>
+            <>
                 <audio ref={correctSound} src={correctNotification}></audio>
                 <audio ref={wrongSound} src={wrongNotification}></audio>
                 <audio ref={buttonSoundRef} src={buttonSound}></audio>
-            </Fragment>
+            </>
             <div className="questions">
                 <h2>Quiz Mode</h2>
                 <div className="lifeline-container">
                     <p>
                         <span onClick={handleFiftyFifty} className="mdi mdi-set-center mdi-24px lifeline-icon">
-                            <span className="lifeline">{fiftyFifty}</span>
+                            <span className="lifeline">{quizState.fiftyFifty}</span>
                         </span>
                     </p>
                     <p>
                         <span onClick={handleHints} className="mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon">
-                            <span className="lifeline">{hints}</span>
+                            <span className="lifeline">{quizState.hints}</span>
                         </span>
                     </p>
                 </div>
                 <div className="timer-container">
                     <p>
-                        <span className="left" style={{ float: 'left' }}>{currentQuestionIndex + 1} of {numberOfQuestions}</span>
+                        <span className="left" style={{ float: 'left' }}>{quizState.currentQuestionIndex + 1} of {quizState.numberOfQuestions}</span>
                         <span className={classnames('right valid', {
-                            'warning': time.distance <= 120000,
-                            'invalid': time.distance < 30000
+                            'warning': quizState.time.distance <= 120000,
+                            'invalid': quizState.time.distance < 30000
                         })}>
-                            {time.minutes}:{time.seconds}
+                            {quizState.time.minutes}:{quizState.time.seconds}
                             <span className="mdi mdi-clock-outline mdi-24px"></span></span>
                     </p>
                 </div>
-                <h5>{currentQuestion.question}</h5>
+                <h5>{quizState.currentQuestion.question}</h5>
                 <div className="options-container">
-                    <p onClick={handleOptionClick} className="option">{currentQuestion.optionA}</p>
-                    <p onClick={handleOptionClick} className="option">{currentQuestion.optionB}</p>
+                    <p onClick={handleOptionClick} className="option">{quizState.currentQuestion.optionA}</p>
+                    <p onClick={handleOptionClick} className="option">{quizState.currentQuestion.optionB}</p>
                 </div>
                 <div className="options-container">
-                    <p onClick={handleOptionClick} className="option">{currentQuestion.optionC}</p>
-                    <p onClick={handleOptionClick} className="option">{currentQuestion.optionD}</p>
+                    <p onClick={handleOptionClick} className="option">{quizState.currentQuestion.optionC}</p>
+                    <p onClick={handleOptionClick} className="option">{quizState.currentQuestion.optionD}</p>
                 </div>
 
                 <div className="button-container">
                     <button 
-                        className={classnames('', {'disable': previousButtonDisabled})}
+                        className={classnames('', {'disable': quizState.previousButtonDisabled})}
                         id="previous-button" 
                         onClick={handleButtonClick}>
                         Previous
                     </button>
                     <button 
-                        className={classnames('', {'disable': nextButtonDisabled})}
+                        className={classnames('', {'disable': quizState.nextButtonDisabled})}
                         id="next-button" 
                         onClick={handleButtonClick}>
                         Next
@@ -256,5 +266,6 @@ const Play = (props) => {
             </div>
         </>
     );
- }
-  export default Play;
+};
+
+export default Play;
