@@ -8,7 +8,7 @@ import { mdiCubeOutline } from '@mdi/js';
 
 const Home = () => (
     <>
-        <Helmet><title>Home - GiftQuizzer</title></Helmet>
+        <Helmet><title>GiftQuizzer</title></Helmet>
         <div id="home">
             <section>
                 <div style={{ textAlign: 'center' }}>
@@ -22,10 +22,10 @@ const Home = () => (
                         <li><Link className="play-button" to="/play/instructions">Play</Link></li>
                     </ul>
                 </div>
-                <div className="auth-container">
+                {/* <div className="auth-container">
                     <Link to="/login" className="auth-buttons" id="login-button">Login</Link>
                     <Link to="/register" className="auth-buttons" id="signup-button">Sign up</Link>
-                </div>
+                </div> */}
             </section>
         </div>
     </>

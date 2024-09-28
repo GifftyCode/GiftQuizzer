@@ -48,38 +48,38 @@
         box-shadow: $shadow;
     }
 
-    .auth-container {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        margin-top: $lg;
-    }
+    // .auth-container {
+    //     width: 100%;
+    //     display: flex;
+    //     justify-content: space-between;
+    //     margin-top: $lg;
+    // }
 
-    #login-button {
-        background-color: $red;
-    }
-    #login-button:hover {
-        background-color: darken($red, 10%);
-        box-shadow: $shadow;
-    }
+    // #login-button {
+    //     background-color: $red;
+    // }
+    // #login-button:hover {
+    //     background-color: darken($red, 10%);
+    //     box-shadow: $shadow;
+    // }
     
-    #signup-button {
-        background-color: $blue;
-    }
-    #signup-button:hover {
-        background-color: darken($blue, 10%);
-        box-shadow: $shadow;
-    }
+    // #signup-button {
+    //     background-color: $blue;
+    // }
+    // #signup-button:hover {
+    //     background-color: darken($blue, 10%);
+    //     box-shadow: $shadow;
+    // }
 
-    .auth-container .auth-buttons {
-        color: #fff;
-        cursor: pointer;
-        border-radius: $button-radius;
-        padding: $normal 0;
-        text-align: center;
-        transition: 0.3s linear all;
-        width: 45%;
-    }
+    // .auth-container .auth-buttons {
+    //     color: #fff;
+    //     cursor: pointer;
+    //     border-radius: $button-radius;
+    //     padding: $normal 0;
+    //     text-align: center;
+    //     transition: 0.3s linear all;
+    //     width: 45%;
+    // }
 }
 
 @media (max-width: 768px) {
