@@ -11,20 +11,20 @@ const Home = () => {
     <Helmet><title>GiftQuizzer</title></Helmet>
     <div id="home">
         <section>
-            <div>
-            <Icon path={mdiCubeOutline} size={2} />
-            </div>
+        <div style={{ textAlign: 'center' }}>
+      <Icon path={mdiCubeOutline} size={4} color='orange' />
+    </div>
             <h1>GiftQuizzer</h1>
             <div className="play-button-container">
                 <ul>
-                    <li>
-                    <Link to="/play/instructions" rel="noopener noreferrer">Play</Link>
+                    <li >
+                    <Link className='play-button' to="/play/instructions" rel="noopener noreferrer">Play</Link>
                     </li>
                 </ul>
             </div>
             <div className="auth-container">
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
+                <Link to="/login" className='auth-button' id='login-button'>Login</Link>
+                <Link to="/register" className='auth-button' id='signup-button'>Register</Link>
             </div>
         </section>
     </div>
