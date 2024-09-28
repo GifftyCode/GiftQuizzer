@@ -1,26 +1,26 @@
 #home {
-    background-image: url('');
+    background-image: url('../../assets/img/background.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
     justify-content: space-around;
     height: 100vh;
-    width: 100vw;  
+    width: 100vw;
 
     section {
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 5px;
-        padding-left: 2rem;
-        padding-right: 2rem;
+        padding-left: $md;
+        padding-right: $md;
         height: 80%;
         width: 35%;
     }
 
     h1 {
-        text-align: center;
-        color: $off-white;
         font-size: $lg;
         font-weight: 400;
+        text-align: center;
+        color: $off-white;
     }
 
     .play-button-container {
@@ -29,19 +29,20 @@
 
     a.play-button {
         background-color: $green;
-        display: block;
         border-radius: $button-radius;
         color: #fff;
+        display: block;
         cursor: pointer;
         padding: $normal;
         text-align: center;
         transition: 0.3s linear all;
     }
 
-
     a.play-button:hover {
         background-color: darken($green, 10%);
+        box-shadow: $shadow;
     }
+
     .auth-container {
         width: 100%;
         display: flex;
@@ -49,34 +50,31 @@
         margin-top: $lg;
     }
 
-    
-
     #login-button {
         background-color: $red;
     }
-
     #login-button:hover {
         background-color: darken($red, 10%);
+        box-shadow: $shadow;
     }
-
+    
     #signup-button {
         background-color: $blue;
     }
-
-    #signup-button:hover{
+    #signup-button:hover {
         background-color: darken($blue, 10%);
+        box-shadow: $shadow;
     }
 
-    .auth-container .auth-button {
+    .auth-container .auth-buttons {
         color: #fff;
         cursor: pointer;
-        border-radius: 30px;
+        border-radius: $button-radius;
         padding: $normal 0;
         text-align: center;
         transition: 0.3s linear all;
         width: 45%;
     }
-
 }
 
 @media (max-width: 768px) {
