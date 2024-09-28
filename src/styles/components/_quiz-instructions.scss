@@ -33,7 +33,7 @@
     }
 } 
 
-@media (max-width: $md-breakpoints) {
+@media (max-width: $md-breakpoint) {
     .instructions img {
         width: 100% !important;
         height: 150% !important;
